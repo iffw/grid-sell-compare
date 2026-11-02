@@ -1,0 +1,150 @@
+<style>
+:root{
+  --ink: var(--hatch-widget-text, #191919);
+  --muted: var(--hatch-widget-muted, #6b7280);
+  --surface: var(--hatch-widget-surface, #ffffff);
+  --soft: var(--hatch-widget-surface-muted, #f3f4f6);
+  --border: var(--hatch-widget-border, #d4d4d8);
+  --accent: var(--hatch-widget-accent, #b45309);
+}
+*{box-sizing:border-box}
+body,.wrap{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);line-height:1.5}
+.wrap{max-width:1060px;margin:0 auto;padding:8px 4px}
+h1{font-size:21px;margin:4px 0 2px}
+.lede{color:var(--muted);font-size:13.5px;margin:0 0 6px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;margin:8px 0 2px}
+.sw{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:5px}
+.sw.open{background:rgba(59,130,246,.45);border:1px solid rgba(59,130,246,.8)}
+.sw.close{background:rgba(245,158,11,.45);border:1px solid rgba(217,119,6,.85)}
+section{margin-top:22px}
+h2{font-size:17px;margin:0 0 2px}
+.sub{color:var(--muted);font-size:13px;margin:0 0 10px}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:680px){.cols{grid-template-columns:1fr}}
+.col{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 10px 8px}
+.col h4{margin:0 0 4px;text-align:center;font-size:15.5px}
+.inv{text-align:center;font-size:12.5px;color:var(--muted);min-height:34px}
+.ladder{position:relative;height:560px;border:1px solid var(--border);border-radius:8px;overflow:visible;margin-top:4px}
+.zone{position:absolute;left:0;right:0}
+.sellzone{top:0;height:50%;background:rgba(220,60,60,.055);border-radius:8px 8px 0 0}
+.buyzone{bottom:0;height:50%;background:rgba(59,130,246,.055);border-radius:0 0 8px 8px}
+.startline{position:absolute;left:0;right:0;border-top:2px dashed var(--accent);z-index:3}
+.startline span{position:absolute;right:4px;top:-19px;font-size:11.5px;color:var(--accent);font-weight:700;background:var(--surface);padding:0 3px}
+.tick{position:absolute;left:52px;right:8px;transform:translateY(50%);display:flex;align-items:center;z-index:2}
+.tick .tp{position:absolute;left:-52px;width:46px;text-align:right;font-size:12px;font-weight:600}
+.tick .tb{flex:1;text-align:center;font-size:12.5px;padding:3px 2px;border-radius:6px;white-space:nowrap}
+.tick.sell .tb{font-weight:700}
+.tick.buy{opacity:.62}
+.tick.buy .tb{font-size:11.5px;padding:2px}
+.open .tb{background:rgba(59,130,246,.28);border:1px solid rgba(59,130,246,.75)}
+.close .tb{background:rgba(245,158,11,.30);border:1px solid rgba(217,119,6,.8)}
+.gap{position:absolute;right:-2px;transform:translateY(50%);font-size:11px;color:#dc2626;font-weight:700;background:var(--surface);padding:0 2px;z-index:4}
+.tick.sell{right:44px}
+.axis{display:flex;justify-content:space-between;color:var(--muted);font-size:11.5px;margin-top:4px}
+.sum{margin-top:20px;background:var(--soft);border-radius:10px;padding:12px 14px;font-size:13.5px}
+.sum b{color:var(--accent)}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px}
+th,td{border:1px solid var(--border);padding:6px 8px;text-align:left}
+th{background:var(--soft);text-align:center}
+</style>
+<div class="wrap">
+<h1>10 格网格 · 卖单挂法对比（按真实价格比例绘制）</h1>
+<p class="lede">统一条件：区间 90–110 · 起始价 100 · 10 格 · 单格 1 份 · 三台同保证金、同杠杆、同标的。梯子按价格等比例画：格线在图中的高度 = 真实价格位置，疏密就是真实疏密。</p>
+<div class="legend">
+  <span><span class="sw close"></span>平仓单（卖手里已有的仓 / 买回已开的仓）</span>
+  <span><span class="sw open"></span>开仓单（新建仓位）</span>
+  <span>卖单加粗高亮，买单半透明作对照</span>
+</div>
+
+  <section>
+    <h2>一、等差网格</h2>
+    <p class="sub">每格恒差 <b>2.00</b>：格线 90、92、…、110。起始价 100 正好压在格线上，上方 5 档卖单、下方 5 档买单。卖单间距标注在做多那台右侧（↕），三台完全相同。</p>
+    <div class="cols">
+    <div class="col">
+      <h4>做多网格</h4>
+      <div class="inv">开局库存：市价买入 5 份多仓（给上方卖单备货）</div>
+      <div class="ladder">
+        <div class="zone sellzone"></div>
+        <div class="zone buyzone"></div>
+        <div class="startline" style="bottom:50.00%"><span>起始价 100</span></div>
+        <div class="tick buy open" style="bottom:0.00%"><span class="tp">90.00</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick buy open" style="bottom:10.00%"><span class="tp">92.00</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick buy open" style="bottom:20.00%"><span class="tp">94.00</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick buy open" style="bottom:30.00%"><span class="tp">96.00</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick buy open" style="bottom:40.00%"><span class="tp">98.00</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick sell close" style="bottom:60.00%"><span class="tp">102.00</span><span class="tb">卖 · 平多 ×1份</span></div><div class="tick sell close" style="bottom:70.00%"><span class="tp">104.00</span><span class="tb">卖 · 平多 ×1份</span></div><div class="tick sell close" style="bottom:80.00%"><span class="tp">106.00</span><span class="tb">卖 · 平多 ×1份</span></div><div class="tick sell close" style="bottom:90.00%"><span class="tp">108.00</span><span class="tb">卖 · 平多 ×1份</span></div><div class="tick sell close" style="bottom:100.00%"><span class="tp">110.00</span><span class="tb">卖 · 平多 ×1份</span></div>
+        <div class="gap" style="bottom:50.00%">↕ 4.00</div><div class="gap" style="bottom:65.00%">↕ 2.00</div><div class="gap" style="bottom:75.00%">↕ 2.00</div><div class="gap" style="bottom:85.00%">↕ 2.00</div><div class="gap" style="bottom:95.00%">↕ 2.00</div>
+      </div>
+      <div class="axis"><span>下沿 90</span><span>上沿 110</span></div>
+    </div>
+    <div class="col">
+      <h4>做空网格</h4>
+      <div class="inv">开局库存：市价开 5 份空仓（给下方买单备平）</div>
+      <div class="ladder">
+        <div class="zone sellzone"></div>
+        <div class="zone buyzone"></div>
+        <div class="startline" style="bottom:50.00%"><span>起始价 100</span></div>
+        <div class="tick buy close" style="bottom:0.00%"><span class="tp">90.00</span><span class="tb">买 · 平空 ×1份</span></div><div class="tick buy close" style="bottom:10.00%"><span class="tp">92.00</span><span class="tb">买 · 平空 ×1份</span></div><div class="tick buy close" style="bottom:20.00%"><span class="tp">94.00</span><span class="tb">买 · 平空 ×1份</span></div><div class="tick buy close" style="bottom:30.00%"><span class="tp">96.00</span><span class="tb">买 · 平空 ×1份</span></div><div class="tick buy close" style="bottom:40.00%"><span class="tp">98.00</span><span class="tb">买 · 平空 ×1份</span></div><div class="tick sell open" style="bottom:60.00%"><span class="tp">102.00</span><span class="tb">卖 · 开空 ×1份</span></div><div class="tick sell open" style="bottom:70.00%"><span class="tp">104.00</span><span class="tb">卖 · 开空 ×1份</span></div><div class="tick sell open" style="bottom:80.00%"><span class="tp">106.00</span><span class="tb">卖 · 开空 ×1份</span></div><div class="tick sell open" style="bottom:90.00%"><span class="tp">108.00</span><span class="tb">卖 · 开空 ×1份</span></div><div class="tick sell open" style="bottom:100.00%"><span class="tp">110.00</span><span class="tb">卖 · 开空 ×1份</span></div>
+        
+      </div>
+      <div class="axis"><span>下沿 90</span><span>上沿 110</span></div>
+    </div>
+    <div class="col">
+      <h4>中性网格</h4>
+      <div class="inv">开局库存：0（两边全是空挂的开仓单）</div>
+      <div class="ladder">
+        <div class="zone sellzone"></div>
+        <div class="zone buyzone"></div>
+        <div class="startline" style="bottom:50.00%"><span>起始价 100</span></div>
+        <div class="tick buy open" style="bottom:0.00%"><span class="tp">90.00</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick buy open" style="bottom:10.00%"><span class="tp">92.00</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick buy open" style="bottom:20.00%"><span class="tp">94.00</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick buy open" style="bottom:30.00%"><span class="tp">96.00</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick buy open" style="bottom:40.00%"><span class="tp">98.00</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick sell open" style="bottom:60.00%"><span class="tp">102.00</span><span class="tb">卖 · 开空 ×1份</span></div><div class="tick sell open" style="bottom:70.00%"><span class="tp">104.00</span><span class="tb">卖 · 开空 ×1份</span></div><div class="tick sell open" style="bottom:80.00%"><span class="tp">106.00</span><span class="tb">卖 · 开空 ×1份</span></div><div class="tick sell open" style="bottom:90.00%"><span class="tp">108.00</span><span class="tb">卖 · 开空 ×1份</span></div><div class="tick sell open" style="bottom:100.00%"><span class="tp">110.00</span><span class="tb">卖 · 开空 ×1份</span></div>
+        
+      </div>
+      <div class="axis"><span>下沿 90</span><span>上沿 110</span></div>
+    </div></div>
+  </section>
+
+  <section>
+    <h2>二、等比网格</h2>
+    <p class="sub">每格恒涨 <b>2.027%</b>（格比 r=(110÷90)<sup>1/10</sup>）：格线越往上越疏，卖单间距从 2.05 一路放大到 2.19。起始价 100 <b>不在格线上</b>（夹在 99.50 和 101.52 中间），上方只有 5 档格线、下方有 6 档，所以三台开局库存第一次出现不对称。</p>
+    <div class="cols">
+    <div class="col">
+      <h4>做多网格</h4>
+      <div class="inv">开局库存：市价买入 5 份多仓（给上方卖单备货）</div>
+      <div class="ladder">
+        <div class="zone sellzone"></div>
+        <div class="zone buyzone"></div>
+        <div class="startline" style="bottom:50.00%"><span>起始价 100</span></div>
+        <div class="tick buy open" style="bottom:0.00%"><span class="tp">90.00</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick buy open" style="bottom:9.12%"><span class="tp">91.82</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick buy open" style="bottom:18.43%"><span class="tp">93.69</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick buy open" style="bottom:27.92%"><span class="tp">95.58</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick buy open" style="bottom:37.61%"><span class="tp">97.52</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick buy open" style="bottom:47.49%"><span class="tp">99.50</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick sell close" style="bottom:57.58%"><span class="tp">101.52</span><span class="tb">卖 · 平多 ×1份</span></div><div class="tick sell close" style="bottom:67.87%"><span class="tp">103.57</span><span class="tb">卖 · 平多 ×1份</span></div><div class="tick sell close" style="bottom:78.36%"><span class="tp">105.67</span><span class="tb">卖 · 平多 ×1份</span></div><div class="tick sell close" style="bottom:89.07%"><span class="tp">107.81</span><span class="tb">卖 · 平多 ×1份</span></div><div class="tick sell close" style="bottom:100.00%"><span class="tp">110.00</span><span class="tb">卖 · 平多 ×1份</span></div>
+        <div class="gap" style="bottom:52.54%">↕ 2.02</div><div class="gap" style="bottom:62.72%">↕ 2.06</div><div class="gap" style="bottom:73.11%">↕ 2.10</div><div class="gap" style="bottom:83.72%">↕ 2.14</div><div class="gap" style="bottom:94.54%">↕ 2.19</div>
+      </div>
+      <div class="axis"><span>下沿 90</span><span>上沿 110</span></div>
+    </div>
+    <div class="col">
+      <h4>做空网格</h4>
+      <div class="inv">开局库存：市价开 6 份空仓（给下方买单备平）</div>
+      <div class="ladder">
+        <div class="zone sellzone"></div>
+        <div class="zone buyzone"></div>
+        <div class="startline" style="bottom:50.00%"><span>起始价 100</span></div>
+        <div class="tick buy close" style="bottom:0.00%"><span class="tp">90.00</span><span class="tb">买 · 平空 ×1份</span></div><div class="tick buy close" style="bottom:9.12%"><span class="tp">91.82</span><span class="tb">买 · 平空 ×1份</span></div><div class="tick buy close" style="bottom:18.43%"><span class="tp">93.69</span><span class="tb">买 · 平空 ×1份</span></div><div class="tick buy close" style="bottom:27.92%"><span class="tp">95.58</span><span class="tb">买 · 平空 ×1份</span></div><div class="tick buy close" style="bottom:37.61%"><span class="tp">97.52</span><span class="tb">买 · 平空 ×1份</span></div><div class="tick buy close" style="bottom:47.49%"><span class="tp">99.50</span><span class="tb">买 · 平空 ×1份</span></div><div class="tick sell open" style="bottom:57.58%"><span class="tp">101.52</span><span class="tb">卖 · 开空 ×1份</span></div><div class="tick sell open" style="bottom:67.87%"><span class="tp">103.57</span><span class="tb">卖 · 开空 ×1份</span></div><div class="tick sell open" style="bottom:78.36%"><span class="tp">105.67</span><span class="tb">卖 · 开空 ×1份</span></div><div class="tick sell open" style="bottom:89.07%"><span class="tp">107.81</span><span class="tb">卖 · 开空 ×1份</span></div><div class="tick sell open" style="bottom:100.00%"><span class="tp">110.00</span><span class="tb">卖 · 开空 ×1份</span></div>
+        
+      </div>
+      <div class="axis"><span>下沿 90</span><span>上沿 110</span></div>
+    </div>
+    <div class="col">
+      <h4>中性网格</h4>
+      <div class="inv">开局库存：0（两边全是空挂的开仓单）</div>
+      <div class="ladder">
+        <div class="zone sellzone"></div>
+        <div class="zone buyzone"></div>
+        <div class="startline" style="bottom:50.00%"><span>起始价 100</span></div>
+        <div class="tick buy open" style="bottom:0.00%"><span class="tp">90.00</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick buy open" style="bottom:9.12%"><span class="tp">91.82</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick buy open" style="bottom:18.43%"><span class="tp">93.69</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick buy open" style="bottom:27.92%"><span class="tp">95.58</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick buy open" style="bottom:37.61%"><span class="tp">97.52</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick buy open" style="bottom:47.49%"><span class="tp">99.50</span><span class="tb">买 · 开多 ×1份</span></div><div class="tick sell open" style="bottom:57.58%"><span class="tp">101.52</span><span class="tb">卖 · 开空 ×1份</span></div><div class="tick sell open" style="bottom:67.87%"><span class="tp">103.57</span><span class="tb">卖 · 开空 ×1份</span></div><div class="tick sell open" style="bottom:78.36%"><span class="tp">105.67</span><span class="tb">卖 · 开空 ×1份</span></div><div class="tick sell open" style="bottom:89.07%"><span class="tp">107.81</span><span class="tb">卖 · 开空 ×1份</span></div><div class="tick sell open" style="bottom:100.00%"><span class="tp">110.00</span><span class="tb">卖 · 开空 ×1份</span></div>
+        
+      </div>
+      <div class="axis"><span>下沿 90</span><span>上沿 110</span></div>
+    </div></div>
+  </section>
+<table>
+<tr><th>对比</th><th>等差</th><th>等比</th></tr>
+<tr><td><b>卖单价格表（三台相同）</b></td><td>102 / 104 / 106 / 108 / 110</td><td>101.52 / 103.57 / 105.67 / 107.81 / 110</td></tr>
+<tr><td><b>卖单间距</b></td><td>恒为 2.00</td><td>2.05 → 2.10 → 2.14 → 2.19，越往上越大</td></tr>
+<tr><td><b>每份套利（跨一格）</b></td><td>金额恒为 2.00；收益率从底部 2.22% 缩到顶部 1.85%</td><td>收益率恒为 2.027%；金额从底部 1.82 涨到顶部 2.19</td></tr>
+<tr><td><b>开局库存（多 / 空 / 中性）</b></td><td>5 份多 / 5 份空 / 0</td><td>5 份多 / <b>6 份空</b> / 0（起始价不在格线上，下方多一档）</td></tr>
+</table>
+<div class="sum">看法：先横着看同一行——<b>三台的卖单价格永远对齐</b>，差异只在颜色（性质）和梯子顶上的那句开局库存。再竖着看两节——<b>等差的格子是均匀的方砖，等比的格子越往上越大</b>，这就是两种排法唯一的区别。多/空/中性决定卖单是平还是开，等差/等比决定卖单挂在哪些价格上，两件事互相独立。</div>
+</div>
